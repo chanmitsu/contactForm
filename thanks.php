@@ -5,12 +5,25 @@
 // 別のファイルの読み込み
 // require_once(読み込みたいファイルのパス);
 require_once('functions.php');
+require_once('dbconnect.php');
 
 
-// 入力された内容を取得
+// 入力された内容を取得s
 $username = $_POST['username'];
 $email = $_POST['email'];
 $content = $_POST['content'];
+
+// 実行するSQLの準備
+$sql = 'INSERT INTO surveys(name, email, content, created_at) VALUES(:name, :email, :content, now())';
+
+// SQL文の実行準備
+$stmt = $dbh->prepare($sql);
+$stmt->bindParam(':name', $username, PDO::PARAM_STR);
+$stmt->bindParam(':email', $email, PDO::PARAM_STR);
+$stmt->bindParam(':content', $content, PDO::PARAM_STR);
+
+// SQL文を実行
+$stmt->execute();
 
 ?>
 
